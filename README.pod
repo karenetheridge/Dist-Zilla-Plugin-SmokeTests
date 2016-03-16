@@ -1,0 +1,28 @@
+=pod
+
+=head1 SYNOPSIS
+
+In your F<dist.ini>:
+
+    [SmokeTests]
+
+=head1 DESCRIPTION
+
+This is a L<Dist::Zilla> plugin that...
+
+=head1 CONFIGURATION OPTIONS
+
+=head2 C<foo>
+
+...
+
+=head1 ACKNOWLEDGEMENTS
+
+...
+
+=head1 SEE ALSO
+
+=for :list
+* L<foo>
+
+=cut
