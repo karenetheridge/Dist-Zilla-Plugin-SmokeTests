@@ -16,7 +16,12 @@ my $tzil = Builder->from_config(
                 [ GatherDir => ],
                 [ MetaConfig => ],
                 [ MakeMaker => ],
-                [ SmokeTests => ],
+                [ SmokeTests => { finder => 'MySmokeTests' } ],
+                [ 'FileFinder::ByName' => 'MySmokeTests' => {
+                    dir => 'xt/smoke',
+                    match => '\.t$',
+                  }
+                ],
             ),
             path(qw(source lib Foo.pm)) => "package Foo;\n1;\n",
             path(qw(source t foo.t)) => "foo\n",
@@ -48,7 +53,7 @@ isnt(
         $makefile,
         <<CONTENT),
 # inserted by Dist::Zilla::Plugin::SmokeTests $version
-\$WriteMakefileArgs{test}{TESTS} .= " xt/smoke/*.t" if \$ENV{AUTOMATED_TESTING};
+\$WriteMakefileArgs{test}{TESTS} .= " xt/smoke/bar.t xt/smoke/baz.t" if \$ENV{AUTOMATED_TESTING};
 
 CONTENT
     -1,
@@ -64,7 +69,7 @@ cmp_deeply(
                     class => 'Dist::Zilla::Plugin::SmokeTests',
                     config => {
                         'Dist::Zilla::Plugin::SmokeTests' => {
-                            finder => [ 'xt/smoke/*.t' ],
+                            finder => [ 'MySmokeTests' ],
                         },
                     },
                     name => 'SmokeTests',
