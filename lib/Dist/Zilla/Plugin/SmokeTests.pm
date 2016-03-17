@@ -13,7 +13,8 @@ use Moose;
 with 'Dist::Zilla::Role::FileMunger',
     'Dist::Zilla::Role::FileFinderUser' => {
         default_finders => [ DEFAULT_FINDER ],
-    };
+    },
+    'Dist::Zilla::Role::AfterBuild';
 
 use List::Util 1.33 qw(any first);
 use Dist::Zilla::Plugin::FinderCode;
@@ -32,6 +33,12 @@ around dump_config => sub
     return $config;
 };
 
+has [qw(found_makefilepl found_buildpl)] => (
+    is => 'rw',
+    isa => 'Bool',
+    default => 0,
+);
+
 sub munge_files
 {
     my $self = shift;
@@ -44,6 +51,7 @@ sub munge_files
 
     if (my $file = first { $_->name eq 'Makefile.PL' } @{$self->zilla->files})
     {
+        $self->found_makefilepl(1);
         my $content = $file->content;
 
         $self->log_fatal('failed to find position in Makefile.PL to munge!')
@@ -64,9 +72,20 @@ sub munge_files
 
     if (my $file = first { $_->name eq 'Build.PL' } @{$self->zilla->files})
     {
-        # figure out if Module::Build or Module::Build::Tiny...
+        $self->found_buildpl(1);
+
+        # TODO: figure out if Module::Build or Module::Build::Tiny...
+        # can we support either of these?
         $self->log_fatal('Build.PL munging not yet supported!');
     }
+}
+
+sub after_build
+{
+    my $self = shift;
+
+    $self->log_fatal('there is a Makefile.PL in the build now but we didn\'t see it in time to munge it -- is [MakeMaker] at least version 5.022?')
+        if not $self->found_makefilepl and any { $_->name eq 'Makefile.PL' } @{$self->zilla->files};
 }
 
 __PACKAGE__->meta->make_immutable;
@@ -74,7 +93,7 @@ __END__
 
 =pod
 
-=for Pod::Coverage::TrustPod DEFAULT_FINDER munge_files
+=for Pod::Coverage::TrustPod DEFAULT_FINDER munge_files after_build
 
 =head1 SYNOPSIS
 

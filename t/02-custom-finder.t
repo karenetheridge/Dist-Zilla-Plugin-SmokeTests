@@ -8,6 +8,8 @@ use Test::Deep;
 use Test::Fatal;
 use Path::Tiny;
 
+use Test::Requires { 'Dist::Zilla::Plugin::MakeMaker' => '5.022' };
+
 my $tzil = Builder->from_config(
     { dist_root => 'does-not-exist' },
     {
