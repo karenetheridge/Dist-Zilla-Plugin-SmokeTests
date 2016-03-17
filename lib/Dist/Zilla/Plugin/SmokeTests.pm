@@ -5,7 +5,7 @@ package Dist::Zilla::Plugin::SmokeTests;
 # ABSTRACT: Tell smoke testers to run your smoke tests
 # KEYWORDS: makemaker smoke smoker tests testing automated
 
-our $VERSION = '0.002';
+our $VERSION = '0.003';
 
 use constant DEFAULT_FINDER => 'xt/smoke/*.t';
 
