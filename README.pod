@@ -8,7 +8,7 @@ Dist::Zilla::Plugin::SmokeTests - Tell smoke testers to run your smoke tests
 
 =head1 VERSION
 
-version 0.001
+version 0.002
 
 =head1 SYNOPSIS
 
@@ -24,7 +24,7 @@ include your smoke tests if (and only if) C<$ENV{AUTOMATED_TESTING}> is set.
 This variable is set when your distribution is being run by an automated
 testing (smoker) system.
 
-=for Pod::Coverage::TrustPod DEFAULT_FINDER munge_files
+=for Pod::Coverage::TrustPod DEFAULT_FINDER munge_files after_build
 
 =head1 CONFIGURATION OPTIONS
 
