@@ -8,7 +8,7 @@ use Test::Fatal;
 use Path::Tiny;
 
 plan skip_all => 'This test is only useful for Dist::Zilla versions before 5.022'
-    if eval "require Dist::Zilla::Plugin::MakeMaker; Dist::Zilla::Plugin::MakeMaker->VERSION('5.022'); 1";
+    if eval { require Dist::Zilla::Plugin::MakeMaker; Dist::Zilla::Plugin::MakeMaker->VERSION('5.022'); 1 };
 
 my $tzil = Builder->from_config(
     { dist_root => 'does-not-exist' },
