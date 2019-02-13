@@ -47,7 +47,7 @@ sub munge_files
     my $smoke_test_files =
           @finders == 1 && $finders[0] eq DEFAULT_FINDER ? DEFAULT_FINDER
           # TODO, some sort of escaping of special characters?
-        : join(' ', sort map { $_->name } @{ $self->found_files });
+        : join(' ', sort map $_->name, @{ $self->found_files });
 
     if (my $file = first { $_->name eq 'Makefile.PL' } @{$self->zilla->files})
     {
